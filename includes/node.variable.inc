@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Variable API module. Definition for Drupal core variables
+ * Variable API module. Definition for Backdrop core variables
  */
 
 /**
@@ -17,7 +17,7 @@ function node_variable_info($options) {
       'default' => 600,
       'options' => 'text_length',
     ),
-    'description' => t("The maximum number of characters used in the trimmed version of a post. Drupal will use this setting to determine at which offset long posts should be trimmed. The trimmed version of a post is typically used as a teaser when displaying the post on the main page, in XML feeds, etc. To disable teasers, set to 'Unlimited'. Note that this setting will only affect new or updated content and will not affect existing teasers.", array(), $options),
+    'description' => t("The maximum number of characters used in the trimmed version of a post. Backdrop will use this setting to determine at which offset long posts should be trimmed. The trimmed version of a post is typically used as a teaser when displaying the post on the main page, in XML feeds, etc. To disable teasers, set to 'Unlimited'. Note that this setting will only affect new or updated content and will not affect existing teasers.", array(), $options),
     'group' => 'node_type_settings',
   );
   $variables['node_preview_[node_type]'] = array(
@@ -64,7 +64,7 @@ function node_variable_group_info() {
     'title' => t('Node type settings'),
     'description' => t('Settings for each node type.'),
     'access' => 'administer nodes',
-    'path' => 'admin/structure/types', 
+    'path' => 'admin/structure/types',
   );
   return $groups;
 }
@@ -102,7 +102,7 @@ function node_variable_option_text_length($variable, $options = array()) {
     1600 => t('@count characters', array('@count' => 1600), $options),
     1800 => t('@count characters', array('@count' => 1800), $options),
     2000 => t('@count characters', array('@count' => 2000), $options),
-  );  
+  );
 }
 
 /**
@@ -121,14 +121,14 @@ function node_variable_option_list($variable, $options = array()) {
         'status' => t('Published', array(), $options),
         'promote' => t('Promoted to front page', array(), $options),
         'sticky' => t('Sticky at top of lists', array(), $options),
-        'revision' => t('Create new revision', array(), $options),     
+        'revision' => t('Create new revision', array(), $options),
       );
   }
 }
 
 /**
  * Build subform for variables for node type
- * 
+ *
  * @param $type
  *   Node type name
  * @param $list
@@ -138,7 +138,7 @@ function node_variable_type_subform($type, $list) {
   module_load_include('form.inc', 'variable');
   foreach ($list as $name) {
     $variable = variable_get_child($name . '_[node_type]', $type);
-    $form[$name] = variable_form_element($variable);  
+    $form[$name] = variable_form_element($variable);
   }
   return $form;
 }

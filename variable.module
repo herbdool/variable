@@ -88,7 +88,7 @@ function variable_children($names) {
  * Map children variables to parent variables
  */
 function variable_parent($name) {
-  $map = &drupal_static(__FUNCTION__);
+  $map = &backdrop_static(__FUNCTION__);
   if (!isset($map)) {
     foreach (array_keys(variable_get_info()) as $key) {
       if ($children = variable_children($key)) {
@@ -233,10 +233,10 @@ function variable_get_value($variable, $options = array()) {
   }
   else {
     if (!empty($options['realm'])) {
-      $value = $options['realm']->variable_get($variable['name'], NULL);
+      $value = $options['realm']->variable_get('variable.realm',$variable['name'], NULL);
     }
     else {
-      $value = variable_get($variable['name'], NULL);
+      $value = config_get('variable.realm',$variable['name']);
     }
     if (isset($value)) {
       return $value;
@@ -258,7 +258,7 @@ function variable_set_value($name, $value, $options = array()) {
     $options['realm']->variable_set($name, $value);
   }
   else {
-    variable_set($name, $value);
+    config_set('variable.realm', $name, $value);
   }
   module_invoke_all('variable_update', $name, $value, $old_value, $options);
 }
@@ -300,7 +300,8 @@ function variable_delete($variable, $options = array()) {
     $options['realm']->variable_del($variable['name']);
   }
   else {
-    variable_del($variable['name']);
+    $config = config('variable.realm');
+    $config->clear($variable['name']);
   }
   // Invoke the hook only once even if its multiple
   module_invoke_all('variable_delete', $variable, $options);
@@ -575,7 +576,7 @@ function &variable_static($type, $options = array()) {
   $langcode = isset($options['langcode']) ? $options['langcode'] : 'default';
 
   if (!isset($data[$type])) {
-    $data[$type] = &drupal_static($name);
+    $data[$type] = &backdrop_static($name);
   }
   if (!isset($data[$type][$langcode])) {
     $cache_id = $type . ':' . $langcode;
@@ -614,7 +615,7 @@ function _variable_info($type, $name = NULL, $options = array()) {
 function _variable_language() {
   global $language;
   if (!isset($language)) {
-    drupal_bootstrap(DRUPAL_BOOTSTRAP_LANGUAGE);
+    backdrop_bootstrap(BACKDROP_BOOTSTRAP_LANGUAGE);
   }
   return $language;
 }
@@ -628,7 +629,7 @@ function _variable_language() {
  */
 function _variable_options($options = array()) {
   if (!empty($options['language'])) {
-    $options['langcode'] = $options['language']->language;
+    $options['langcode'] = $options['language']->langcode;
   }
   elseif (!empty($options['langcode']) && ($list = language_list()) && isset($list[$options['langcode']])) {
     $options['language'] = $list[$options['langcode']];
@@ -636,7 +637,7 @@ function _variable_options($options = array()) {
   else {
     $language = _variable_language();
     $options['language'] = $language;
-    $options['langcode'] = $language->language;
+    $options['langcode'] = $language->langcode;
   }
   return $options;
 }
@@ -673,7 +674,7 @@ function _variable_unknown($name) {
     'group' => 'default',
     'module' => 'variable',
     // Space for public service advertisement :-)
-    'description' => t('We have no meta information for this variable. Please, ask module developers to declare their variables. See <a href="http://drupal.org/project/variable">Variable module</a>.'),
+    'description' => t('We have no meta information for this variable. Please, ask module developers to declare their variables.'),
   );
 }
 
@@ -779,7 +780,7 @@ function variable_settings_form($form, $options = array()) {
   $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Save configuration'));
 
   if (!empty($_POST) && form_get_errors()) {
-    drupal_set_message(t('The settings have not been saved because of the errors.'), 'error');
+    backdrop_set_message(t('The settings have not been saved because of the errors.'), 'error');
   }
   $form['#submit'][] = 'variable_settings_form_submit';
   // By default, render the form using theme_system_settings_form().
@@ -810,7 +811,7 @@ function variable_settings_form_submit($form, &$form_state) {
     variable_set_value($key, $value, $options);
   }
 
-  drupal_set_message(t('The configuration options have been saved.'));
+  backdrop_set_message(t('The configuration options have been saved.'));
 }
 
 /**

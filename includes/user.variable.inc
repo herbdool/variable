@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Variable API module. Definition for Drupal core variables
+ * Variable API module. Definition for Backdrop core variables
  */
 
 /**
@@ -113,7 +113,7 @@ function user_variable_info($options) {
   );
 
   // Picture support
-  $picture_support = variable_get('user_pictures', 0);
+  $picture_support = config_get('system.core','user_pictures');
   $form['user_pictures'] = array(
     'type' => 'enable',
     'title' => t('Picture support', array(), $options),

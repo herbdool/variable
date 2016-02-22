@@ -91,12 +91,12 @@ function hook_variable_info($options) {
   $variables['site_name'] = array(
     'type' => 'string',
     'title' => t('Name', array(), $options),
-    'default' => 'Drupal',
+    'default' => 'Backdrop',
     'description' => t('The name of this website.', array(), $options),
     'required' => TRUE,
   );
   $variables['site_403'] = array(
-    'type' => 'drupal_path',
+    'type' => 'backdrop_path',
     'title' => t('Default 403 (access denied) page', array(), $options),
     'default' => '',
     'description' => t('This page is displayed when the requested document is denied to the current user. Leave blank to display a generic "access denied" page.', array(), $options),
@@ -197,7 +197,7 @@ function hook_variable_type_info_alter(&$info) {
  *
  * A form to edit all variables in a group can be generated with:
  *
- *   drupal_get_form('variable_group_form', group_name);
+ *   backdrop_get_form('variable_group_form', group_name);
  *
  * @return
  *   An array of information defining variable types. The array contains

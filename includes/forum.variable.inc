@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Variable API module. Definition for Drupal core variables
+ * Variable API module. Definition for Backdrop core variables
  */
 
 /**
@@ -32,7 +32,7 @@ function forum_variable_info($options) {
     'options' => $forder,
     'description' => t('Default display order for topics.'),
     'group' => 'forum_settings',
-  ); 
+  );
   // Some hidden variables that we may want exposed, localized, etc..
   $variables['forum_nav_vocabulary'] = array(
     'type' => 'select',
@@ -45,7 +45,7 @@ function forum_variable_info($options) {
   $variables['forum_containers'] = array(
     'type' => 'array',
     'title' => t('Forum containers'),
-    'group' => 'forum_settings',    
+    'group' => 'forum_settings',
   );
   return $variables;
 }

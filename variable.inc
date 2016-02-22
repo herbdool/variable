@@ -15,7 +15,7 @@ function variable_build_info($type, $options) {
     case 'group':
     case 'type':
       $info = variable_invoke_all('variable_' . $type . '_info');
-      drupal_alter('variable_' . $type . '_info', $info);
+      backdrop_alter('variable_' . $type . '_info', $info);
       return $info;
   }
 }
@@ -48,7 +48,7 @@ function variable_build_list_info($options) {
     }
   }
   // Last chance for modules to alter variable info.
-  drupal_alter('variable_info', $variables, $options);
+  backdrop_alter('variable_info', $variables, $options);
   return $variables;
 }
 
@@ -180,7 +180,7 @@ function variable_list_module($module) {
  * Fetch options for variable
  */
 function variable_option_list($type, $variable, $options) {
-  $cache = &drupal_static(__FUNCTION__);
+  $cache = &backdrop_static(__FUNCTION__);
   if (isset($cache[$type])) {
     return $cache[$type];
   }
@@ -234,9 +234,9 @@ function variable_module_disable($module) {
  */
 function variable_module_enable($module) {
   if ($variables = variable_list_module($module)) {
-    $list = variable_get('variable_module_list', array());
+    $list = config_get('variable.settings','module_list');
     $list[$module] = variable_children($variables);
-    variable_set('variable_module_list', $list);
+    config_set('variable.settings', 'module_list', $list);
   }
 }
 
@@ -246,12 +246,12 @@ function variable_module_enable($module) {
  * This will be called from variable_modules_uninstalled(), no need to implement it directly.
  */
 function variable_module_uninstall($module) {
-  $list = variable_get('variable_module_list', array());
+  $list = config_get('variable.settings', 'module_list');
   if (isset($list[$module])) {
     // This is a plain list of variables so we can use raw delete.
     array_map('variable_delete', $list[$module]);
     unset($list[$module]);
-    variable_set('variable_module_list', $list);
+    config_set('variable.settings', 'module_list', $list);
   }
 }
 

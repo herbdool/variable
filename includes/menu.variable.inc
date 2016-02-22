@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Variable API module. Definition for Drupal core variables
+ * Variable API module. Definition for Backdrop core variables
  */
 
 /**
@@ -20,7 +20,7 @@ function menu_variable_info($options) {
   $variables['menu_secondary_links_source'] = array(
     'type' => 'select',
     'title' => t('Source for the Secondary links'),
-    'options' => 'menu',  
+    'options' => 'menu',
     'default' => 'user-menu',
     'element' => array('#empty_option' => t('No Secondary links')),
     'description' => t('Select the source for the Secondary links.', array() , $options),

@@ -1,0 +1,5 @@
+[VariableTestCase]
+name = Test Variable API
+description = Exercise the Variable API, default values, save and delete variables, etc.
+group = Variable
+file = variable.test

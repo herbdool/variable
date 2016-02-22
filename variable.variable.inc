@@ -324,7 +324,7 @@ function variable_format_text($variable, $options = array()) {
  * Options callback for numeric select
  */
 function variable_options_select_number($variable, $options = array()) {
-  return drupal_map_assoc($variable['options']);
+  return backdrop_map_assoc($variable['options']);
 }
 
 /**

@@ -54,5 +54,32 @@ function variable_schema() {
  * Implements hook_uninstall().
  */
 function variable_uninstall() {
-  variable_del('variable_module_list');
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function variable_update_last_removed() {
+    return 7001;
+}
+
+/**
+ * @defgroup updates-7.x-to-1.x Updates from 7.x to 1.x
+ * @{
+ * Update functions from Drupal 7.x to Backdrop CMS 1.x.
+ */
+
+/**
+ * Move variable settings from variables to config.
+ */
+
+function variable_update_1000() {
+    // Migrate variables to config.
+    $config = config('variable.settings');
+    //$config->set('something', update_variable_get('something', 0));
+    $config->save();
+
+    // Delete variables.
+    //update_variable_del('something');
+
 }

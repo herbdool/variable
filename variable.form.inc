@@ -189,7 +189,7 @@ function theme_variable_table_select($variables) {
     $row = array();
     foreach ($fields as $field) {
       if ($field == 'element') {
-        $row[] = drupal_render($element[$name]);
+        $row[] = backdrop_render($element[$name]);
       }
       else {
         $row[] = isset($variable[$field]) ? $variable[$field] : '';
@@ -198,7 +198,7 @@ function theme_variable_table_select($variables) {
     $rows[] = $row;
   }
   // Add a "Select all" checkbox.
-  drupal_add_js('misc/tableselect.js');
+  backdrop_add_js('misc/tableselect.js');
   $header['element'] = array('class' => array('select-all'));
 
   return theme('table', array('header' => array_values($header), 'rows' => $rows));

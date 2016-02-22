@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Variable API module. Definition for Drupal core variables
+ * Variable API module. Definition for Backdrop core variables
  */
 
 /**
@@ -12,7 +12,7 @@ function system_variable_info($options) {
   $variables['site_name'] = array(
     'type' => 'string',
     'title' => t('Site name', array(), $options),
-    'default' => 'Drupal',
+    'default' => 'Backdrop',
     'description' => t('The name of this website.', array(), $options),
     'required' => TRUE,
     'group' => 'site_information',
@@ -41,7 +41,7 @@ function system_variable_info($options) {
     'group' => 'site_information',
   );
   $variables['site_frontpage'] = array(
-    'type' => 'drupal_path',
+    'type' => 'backdrop_path',
     'title' => t('Default front page', array(), $options),
     'default' => 'node',
     'description' => t('The home page displays content from this relative URL. If unsure, specify "node".', array(), $options),
@@ -58,14 +58,14 @@ function system_variable_info($options) {
   );
 
   $variables['site_403'] = array(
-    'type' => 'drupal_path',
+    'type' => 'backdrop_path',
     'title' => t('Default 403 (access denied) page', array(), $options),
     'default' => '',
     'description' => t('This page is displayed when the requested document is denied to the current user. Leave blank to display a generic "access denied" page.', array(), $options),
     'group' => 'site_information',
   );
   $variables['site_404'] = array(
-    'type' => 'drupal_path',
+    'type' => 'backdrop_path',
     'title' => t('Default 404 (not found) page', array(), $options),
     'default' => '',
     'description' => t('This page is displayed when no other content matches the requested document. Leave blank to display a generic "page not found" page.', array(), $options),
@@ -170,7 +170,7 @@ function system_variable_info($options) {
   $variables['maintenance_mode_message'] = array(
     'type' => 'text',
     'title' => t('Maintenance mode message', array(), $options),
-    'default' => t('@site is currently under maintenance. We should be back shortly. Thank you for your patience.', array('@site' => variable_get('site_name', 'Drupal')), $options),
+    'default' => t('@site is currently under maintenance. We should be back shortly. Thank you for your patience.', array('@site' => config_get('system.core','site_name')), $options),
     'description' => t('Message to show visitors when the site is in maintenance mode.', array(), $options),
     'group' => 'site_information'
   );
@@ -291,13 +291,13 @@ function system_variable_group_info() {
  * Implements hook_variable_type_info().
  */
 function system_variable_type_info() {
-  // Internal Drupal path as used by menu items.
-  $type['drupal_path'] = array(
-    'title' => t('Drupal path'),
+  // Internal Backdrop path as used by menu items.
+  $type['backdrop_path'] = array(
+    'title' => t('Backdrop path'),
     'element callback' => 'system_variable_path_element',
     'localize' => TRUE,
   );
-  // File system path, relative to Drupal installation.
+  // File system path, relative to Backdrop installation.
   $type['file_path'] = array(
     'title' => t('File path'),
     'default' => conf_path() . '/files',
@@ -414,7 +414,7 @@ function system_variable_option_country($variable, $options) {
  * Callback for time interval options
  */
 function system_variable_option_time_interval($variable, $options) {
-  $period = drupal_map_assoc($variable['interval values'], 'format_interval');
+  $period = backdrop_map_assoc($variable['interval values'], 'format_interval');
   if (isset($period[0])) {
     $period[0] = '<' . t('none') . '>';
   }
@@ -441,7 +441,7 @@ function system_variable_path_element($variable, $options) {
   $element = variable_form_element_default($variable, $options) +array(
     '#type' => 'textfield',
     '#size' => 40,
-    '#field_prefix' => url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q='),
+    '#field_prefix' => url(NULL, array('absolute' => TRUE)) . (config_get('system.core','clean_url') ? '' : '?q='),
   );
   return $element;
 }

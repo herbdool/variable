@@ -1,7 +1,8 @@
 name = Variable
 description = Variable Information and basic variable API
 package = Variable
-core = 7.x
+backdrop = 1.x
+type = module
 
 files[] = includes/forum.variable.inc
 files[] = includes/locale.variable.inc
@@ -11,4 +12,3 @@ files[] = includes/system.variable.inc
 files[] = includes/taxonomy.variable.inc
 files[] = includes/translation.variable.inc
 files[] = includes/user.variable.inc
-files[] = variable.test
