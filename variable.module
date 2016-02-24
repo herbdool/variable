@@ -224,6 +224,7 @@ function variable_get_option($type = NULL) {
  */
 function variable_get_value($variable, $options = array()) {
   $variable = _variable_variable($variable, $options);
+
   if (isset($variable['value'])) {
     return $variable['value'];
   }
@@ -236,7 +237,7 @@ function variable_get_value($variable, $options = array()) {
       $value = $options['realm']->variable_get('variable.realm',$variable['name'], NULL);
     }
     else {
-      $value = config_get('variable.realm',$variable['name']);
+      $value = config_get($variable['module'] . '.settings',$variable['name']);
     }
     if (isset($value)) {
       return $value;
@@ -253,12 +254,14 @@ function variable_get_value($variable, $options = array()) {
  * This basically sets the variable but also invokes hook_variable_update
  */
 function variable_set_value($name, $value, $options = array()) {
+  $variable = _variable_variable($name, $options);
+
   $old_value = variable_get_value($name, NULL, $options);
   if (!empty($options['realm'])) {
     $options['realm']->variable_set($name, $value);
   }
   else {
-    config_set('variable.realm', $name, $value);
+    config_set($variable['module'] . '.settings', $name, $value);
   }
   module_invoke_all('variable_update', $name, $value, $old_value, $options);
 }
@@ -631,7 +634,7 @@ function _variable_options($options = array()) {
   if (!empty($options['language'])) {
     $options['langcode'] = $options['language']->langcode;
   }
-  elseif (!empty($options['langcode']) && ($list = language_list()) && isset($list[$options['langcode']])) {
+  elseif (!empty($options['langcode']) && ($list = language_list(FALSE, TRUE)) && isset($list[$options['langcode']])) {
     $options['language'] = $list[$options['langcode']];
   }
   else {

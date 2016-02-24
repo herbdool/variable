@@ -49,7 +49,7 @@ function locale_variable_type_info() {
  * Callback for all languages
  */
 function locale_variable_options_language($variable, $options) {
-  return locale_language_list('name', TRUE);
+  return language_list(FALSE, TRUE);
 }
 
 /**
@@ -86,7 +86,7 @@ function locale_variable_language_default_format($variable, $options = array()) 
  * This runs alter default element validation so we know it is a valid checkbox option.
  */
 function locale_variable_language_element_validate($element, &$form_state, $form) {
-  $languages = language_list();
+  $languages = language_list(FALSE, TRUE);
   $language = $languages[$element['#value']];
   form_set_value($element, $language, $form_state);
 }
